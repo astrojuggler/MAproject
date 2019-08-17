@@ -5,7 +5,7 @@
 
 PURPOSE
 
-If you're reading this you most likely are a student in Astronomy and you are searching for some help with your work. Specifically, the purpose of this repository is to provide a guideline to a master student whose thesis-project involves the processing of ALMA data and/or the employment of the 3D-BAROLO software (Di Teodoro, Fraternali 2015).
+If you're reading this, you most likely are a student in Astronomy and you are searching for some help with your work. Specifically, the purpose of this repository is to provide a guideline to a master student whose thesis-project involves the processing of ALMA data and/or the employment of the 3D-BAROLO software (Di Teodoro, Fraternali 2015).
 
 
 STRUCTURE
