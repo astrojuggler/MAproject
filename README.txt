@@ -32,6 +32,8 @@ CREDIT & ACKNOWLEDGEMENTS
 I made this repository after completing my master thesis research project at the INAF-Observatory of Brera, Milan, 2018-2019. I thank my supervisors Claudia Cicone and Paola Severgnini for introducing me to the field of Galaxies and, at the same time, teaching me pro-level data-analysis techniques, using science data of high interest.
 Please feel free to use the code-examples and don't hesitate to contact me for any question, comment, correction and idea for the improvement of the data-analysis technique and of the repository.
 
+E-mail address: m.sirressi@campus.unimib.it
+
 
 AUTHOR
 
