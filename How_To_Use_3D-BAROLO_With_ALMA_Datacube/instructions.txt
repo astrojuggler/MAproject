@@ -1,0 +1,54 @@
+1. 3D-BAROLO IN A NUTSHELL
+
+The software 3D-Barolo (3D-Based Analysis of Rotating Object via Line Observations) was developed by Di Teodoro and Fraternali (2015), for constructing rotating disk models and fitting their emissions to datacubes of galaxies. 
+The main assumption of the model is that all the emitting material of the galaxy is confined to a geometrically thin disk and its kinematics is dominated by pure rotational motion. 
+The typical approach, until recent years, for studying the gas kinematics in a galaxy consisted of fitting the 2D-velocity map with an analytical function for the line of sight velocity. Instead, in the 3D approach, the fitting technique is based on a Monte Carlo extraction of the positions and velocities of the gas clouds. This permits to generate the disk one ring at a time and, after the convolution of the disk model with the observational Point Spread Function (PSF), to perform the minimisation on all the maps (channels) comprising the datacube.
+
+Read more in the paper by Di Teodoro & Fraternali (MNRAS, 2015) and in Di Teodoro's PhD thesis (2015) available on the ADS digital library
+
+
+2. PREPARE THE INPUT ALMA DATACUBE
+
+If your ALMA datacube shows evidence(*) for rotation of the emitting gas on the galaxy disk, you may want to use 3D-Barolo to model the rotation. Before doing so, you must crop, cut (on the spectral axis) and convert to the proper format the ALMA datacube, which is the main input of 3D-Barolo.
+
+File input_datacube.py is the script for adjusting the ALMA datacube and for making it ready to use as input when running 3D-Barolo. Please read carefully the comments in the script to understand what the commands do.
+
+(*) Evidence for rotation can be seen in the specific patterns of Channel Maps, Velocity Maps and P-V Diagrams (see e.g. Sirressi, Cicone, Severgnini et al. 2019)
+
+
+3. SPECIFY THE 3D-BAROLO PARAMETERS
+
+File parameters.par is an example of the file you need for specifying the parameters of 3D-BAROLO. Please read carefully the comments to understand the meaning of each parameter.
+
+Read more on the 3D-BAROLO documentation (https://bbarolo.readthedocs.io/en/latest/)
+
+4. FIT & RESIDUAL DATACUBE
+
+In order to run 3D-BAROLO, type on your terminal: 
+
+BBaroloGUI.app/Contents/MacOS/BBarolo -p parameters.par
+
+When Barolo is done, a new folder ('output') will appear in your working directory. In there, open the following files to check the results of the fit:
+
+-> plot_maps_local.pdf		(Moment Maps of data and model compared)
+-> plot_chanmaps_local.pdf 	(Channel Maps of data and model compared)
+-> plot_pv_local.pdf		(P-V Diagrams of data and model compared)
+-> MCG-03-58-007mod_local.fits	(cube of the model disk)
+-> mask.fits			(cube of the fitting mask)
+
+Finding a good fit will probably require a while (~days). After you have tuned the Barolo parameters and you are satisfied with the results of your fit, you are ready to subtract the model disk emission from the ALMA datacube. It is straightforward to do this using the software QFitsView (https://www.mpe.mpg.de/~ott/QFitsView/):
+
+-> Create a copy of the input ALMA datacube and open it with QFitsView
+-> Click on the minus sign at the top of the window (Subtract buffer), click on 'File...' and choose the file MCG-03-58-007mod_local.fits (cube of the model disk)
+-> Save the modified datacube with a meaningful name (e.g. residual_cube.fits)
+
+Essentially you have just subtracted for each channel, pixel by pixel, the intensity of the model from the intensity of the data.
+You can also do that using Python with the advantage of keeping in residual cube the information about the beam size. It would be also a good exercise for learning how to manipulate datacubes with Python. 
+
+5. DATACUBES BACK TO CASA
+
+Now it is time to import the 'residual cube', and if you wish also the 'model cube', back to the CASA format.
+Use the task 'importfits' of the CASA software for that.
+
+Finally you can study the continuum-subtracted, rotation-subtracted line emission of the target galaxy!
+

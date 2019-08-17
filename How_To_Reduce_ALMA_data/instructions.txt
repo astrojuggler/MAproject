@@ -1,0 +1,66 @@
+1. DOWNLOAD THE RAW DATA
+
+The first step is to download the raw interferometric ALMA data from the archive. You can do this from the ESO website (https://almascience.eso.org/asax/) by specifying the attributes of the data you're looking for, such as: Project code, Source, Frequency, ...
+
+ALMA data will be public after one year their acquisition: before that you need the consensus of the Principal Investigator (PI) of the project to download the data.
+
+Please be aware that the raw data can take up several GigaBytes on your hard disk, so you may want to ensure a free space of at least 20-30 Gb before the download and the start of the data processing.
+
+The folder of the data has a complex structure that you are not supposed to change. In addition to the raw data, the folder contains the so called 'products', which are processed data intended for a preview of the observations and not for science purposes.
+When processing the data, new files will be created in the folder. For more information, see the file README therein.
+
+
+2. PRODUCE THE CALIBRATED VISIBILITIES
+
+Being ALMA an interferometer, the data processing requires to calibrate the raw data, producing as outcome the visibility files. These represent basically the inverse Fourier transform of the intensity of the sky and therefore need to be deconvolved in order to obtain the image of the observed source. If you want to know more about multiple telescope interferometers, see e.g. Chapter 7 of the textbook Astronomy Methods, by Hale Bradt (2004).
+
+In order to calibrate the raw data, you need to use a pipeline which must be included in the version of CASA you need to download. Unless you are a guru of interferometry, you cannot do better than what the CASA pipeline does.
+
+File calibration.py is the script for calibrating the raw data from the terminal. Please read carefully the comments in the script to understand what the commands do.
+
+
+3. GENERATE THE IMAGES
+
+In order to deconvolve the visibilities and obtain the image of the target source, you need to use the so called 'cleaning algorithms', which you can run with the software CASA.
+
+File imaging.py is the script for generating the science images of the target source. Here you find two different examples of how to use the cleaning algorithm: try the first one 'CLEANING OF DATACUBES' for now, you'll find a good opportunity to use the second one 'CLEANING OF COLLAPSED MAPS' in step 4.
+
+The basic assumption of the cleaning algorithms is that the sources of the sky can be considered as a sum of point sources. One knows a priori that the image of a point source is the Bessel function, or Point Spread Function (PSF). So, the main steps of a cleaning algorithm are:
+
+-> find the brightest point source
+-> fit its emission with a PSF
+-> subtract 10-50\% of the intensity of the best fit from the visibility data
+-> iterate the previous steps until you reach a threshold intensity (noise)
+
+During the iteration, different sources will stand out and finally, when their emission has been fitted and subtracted, you are left with the background signal. It is possible then to reconstruct the sky image by adding all the best-fit PSFs.
+
+I encourage you to read about the parameters of the cleaning task on https://casa.nrao.edu/docs/taskref/tclean-task.html, so that you are aware of their purpose and you can change their values with confidence.
+
+The mask within a cleaning algorithm is a region of the sky that you can select to indicate where you expect to see most of the emission, thus assisting the algorithm with its imaging task. The mask selection can also be done automatically by the algorithm itself, so that a different mask can be used for each frequency. This is usually the best option.
+
+The Viewer is an interface within CASA which allows to view the images generated with the cleaning algorithms. I suggest you to start using it by your self, and when you don't succeed in a specific task you can find help at https://casa.nrao.edu/docs/cookbook/casa_cookbook008.html
+The Viewer might get very slow, develop bugs and crash... Arm yourself with patience. By the time you're reading this, the software CARTA might have replaced the Viewer. If so, give it a try!
+
+
+4. SUBTRACT THE CONTINUUM
+
+If you imaged a line emission, you may want to subtract the continuum emission. Again, the software CASA allows you to do that.
+First, you should check whether there is any significant continuum emission in the frequency range of your interest. Second, you need to subtract the continuum emission from the visibilities and perform again the cleaning, this time using as input the corrected visibilities.
+
+File continuum_subtraction.py is the script for doing so. Please read carefully the comments in the script to understand what the commands do.
+
+
+5. DISPLAY DATA WITH SOME MAPS
+
+There are several maps you may want to create, once you have your continuum-subtracted, primary-beam-corrected datacube. Here is a list with some of them:
+
+-> Channel Maps
+-> Moment Maps
+-> Position-Velocity Diagrams
+
+File maps.py is the script for generating such maps out of the datacube, along with a short explanation of their physical meaning.
+
+
+For any problems, always ask Google before going to your supervisor. The most useful website I found is the Task Reference Manual -Oct 2016- (https://casa.nrao.edu/docs/TaskRef/TaskRef.html), which can be the solution for your issues with the CASA tasks. It can also serve as a good tutorial for learning more tasks not mentioned in this guideline.
+
+

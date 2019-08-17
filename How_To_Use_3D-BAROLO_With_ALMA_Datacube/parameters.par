@@ -1,0 +1,48 @@
+// This is the parameter file to use when running Barolo for fitting a rotating disk emission
+// Please read carefully the comments to understand the meaning of each parameter.
+
+// For any problems, you can look at the 3D-BAROLO documentation (https://bbarolo.readthedocs.io/en/latest/)
+// see also the paper by Di Teodoro & Fraternali (MNRAS, 2015) and Di Teodoro's PhD thesis (2015) available on the ADS digital library
+
+// --------------------------------------------------------------------------
+// HOW TO SPECIFY BAROLO PARAMETERS
+// --------------------------------------------------------------------------
+
+FITSFILE    /Users/mattia/Documents/tesi_brera/modeling/co10_cube_zcorr.image.pbcor.box35.+-250kms.fits     // datacube input file generated with input_datacube.py
+3DFIT       true
+
+// Beam values of the ALMA datacube:
+OBMAJ       3.3  //initial beam major axis
+BMAJ        3.3  //final beam major axis
+OBMIN       2.0  //initial beam minor axis
+BMIN        2.0  //final beam minor axis
+
+// Barolo will use a mask and fit only the pixels within such region for considering only genuine (not noisy) emission.
+// It is important to find a proper value of the parameter SNRCUT
+MASK        SEARCH
+SNRCUT		2.7      // the mask chosen here is made of the pixels with S/N > 2.7
+//GROWTHCUT   2.5    // secondary threshold for the pixel at the edges of the first mask
+PLOTMASK    true     // it creates a 'mask' datacube (one mask for each channel) that you view after the fit
+
+// It is crucial to choose a proper configuration of the model disk and specify the known geometrical parameters:
+NRADII		8      // number of annuli of the model disk
+RADSEP		2      // separation between the annulii in arcsec, it should be similar to the beam size (spatial resolution of the ALMA data)
+VSYS			0      // systemic velocity of the galaxy (should be 0 km/s in the spectral reference frame of the ALMA datacube)
+VROT			150    // initial guess for the rotational velocity of the disk in km/s
+VDISP			50     // velocity dispersion in km/s of the clouds comprising the rotating disk
+XPOS			88     // x-coordinate of the pixel coinciding with the centre od the disk (find this out in the Viewer)
+YPOS			87     // y-coordinate of the pixel coinciding with the centre od the disk (find this out in the Viewer)
+INC			37     // inclination angle of the disk, infer this from the Moment Maps or from optical data...
+PA				318    // position angle of the disk, infer this from the Velocity Map
+Z0				0
+
+// These parameters are related to the residual function used in the fitting procedure:
+WFUNC			0
+FTYPE			1
+
+// Here you specify the parameters you want to let free during the fit
+// Try first to fix the geometry (INC, PA) and then, according to your data, you can fit them as well.
+FREE			VDISP VROT
+
+// Turn this flag TRUE when you want to compute errors for the fitting paramters:
+FLAGERRORS  FALSE
