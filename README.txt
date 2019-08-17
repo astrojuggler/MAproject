@@ -1,4 +1,6 @@
-Welcome to this repository!
+ ***                            ***
+***  Welcome to this repository!  ***
+ ***                            ***
 
 
 PURPOSE
@@ -33,5 +35,7 @@ Please feel free to use the code-examples and don't hesitate to contact me for a
 
 AUTHOR
 
-Mattia Sirressi
+Copyright (C) 2019  Mattia Sirressi - All Rights Reserved
+You may use, distribute and modify this code under the terms of the GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007.
+You should have received a copy of the this license with this file.
 
